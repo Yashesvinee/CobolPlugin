@@ -1,0 +1,45 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>CobolPlugin.CobolPlugin</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
+    <name>CobolPlugin</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor url="https://www.yourcompany.com">YourCompany</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
+    <description><![CDATA[
+        Minimal COBOL language support plugin implementing the essential parts of the IntelliJ Custom Language Support Tutorial.
+        Supports basic COBOL syntax highlighting and parsing for the provided code sample.
+    ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Chapter 1: Language and File Type -->
+        <fileType
+                name="COBOL File"
+                implementationClass="cobol.CobolFileType"
+                fieldName="INSTANCE"
+                language="Cobol"
+                extensions="cbl"/>
+
+        <!-- Chapter 2: Grammar and Parser -->
+        <lang.parserDefinition
+                language="Cobol"
+                implementationClass="cobol.CobolParserDefinition"/>
+
+        <!-- Chapter 4: Syntax Highlighter -->
+        <lang.syntaxHighlighterFactory
+                language="Cobol"
+                implementationClass="cobol.CobolSyntaxHighlighterFactory"/>
+    </extensions>
+</idea-plugin>

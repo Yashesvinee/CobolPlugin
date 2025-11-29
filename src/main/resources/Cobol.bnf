@@ -1,0 +1,78 @@
+{
+  parserClass="cobol.parser.CobolParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Cobol"
+  psiImplClassSuffix="Impl"
+  psiPackage="cobol.psi"
+  psiImplPackage="cobol.psi.impl"
+
+  elementTypeHolderClass="cobol.psi.CobolTypes"
+  elementTypeClass="cobol.psi.CobolElementType"
+  tokenTypeClass="cobol.psi.CobolTokenType"
+
+  tokens=[
+    LINE_NUMBER='regexp:[0-9]{2}'
+    IDENTIFICATION='IDENTIFICATION'
+    DIVISION='DIVISION'
+    PROGRAM_ID='PROGRAM-ID'
+    DATA='DATA'
+    WORKING_STORAGE='WORKING-STORAGE'
+    SECTION='SECTION'
+    PROCEDURE='PROCEDURE'
+    PERFORM='PERFORM'
+    VARYING='VARYING'
+    FROM='FROM'
+    BY='BY'
+    UNTIL='UNTIL'
+    STOP='STOP'
+    RUN='RUN'
+    DISPLAY='DISPLAY'
+    PIC='PIC'
+    VALUE='VALUE'
+
+    DOT='.'
+    EQUALS='='
+    LPAREN='('
+    RPAREN=')'
+
+    IDENTIFIER='regexp:[A-Z][A-Z0-9\-]*'
+    STRING='regexp:\'[^\']*\''
+    NUMBER='regexp:[0-9]+'
+
+    COMMENT='regexp:\*.*'
+    CRLF='regexp:\R'
+    WHITE_SPACE='regexp:[ \t\n\x0B\f\r]+'
+  ]
+}
+
+cobolFile ::= item_*
+
+private item_ ::= (cobolLine | COMMENT | CRLF)
+
+cobolLine ::= LINE_NUMBER? cobolStatement
+
+cobolStatement ::=
+    identificationDivision
+  | programId
+  | dataDivision
+  | workingStorageSection
+  | dataItem
+  | procedureDivision
+  | paragraph
+  | performStatement
+  | stopStatement
+  | displayStatement
+
+identificationDivision ::= IDENTIFICATION DIVISION DOT
+programId ::= PROGRAM_ID DOT IDENTIFIER DOT
+dataDivision ::= DATA DIVISION DOT
+workingStorageSection ::= WORKING_STORAGE SECTION DOT
+dataItem ::= NUMBER IDENTIFIER PIC picClause (VALUE NUMBER)? DOT
+picClause ::= NUMBER LPAREN NUMBER RPAREN
+procedureDivision ::= PROCEDURE DIVISION DOT
+paragraph ::= IDENTIFIER DOT
+performStatement ::= PERFORM IDENTIFIER VARYING IDENTIFIER FROM NUMBER BY NUMBER UNTIL IDENTIFIER EQUALS NUMBER
+stopStatement ::= STOP RUN DOT
+displayStatement ::= DISPLAY (STRING | IDENTIFIER) IDENTIFIER? DOT
